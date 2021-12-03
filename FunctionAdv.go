@@ -61,7 +61,14 @@ func main() {
 	var sum, sum3 = simpleSum(numbers)
 	fmt.Printf("The values are %d and %d\n", sum, sum3)
 
-	// Function as Parameter
+	// FUNCTION AS PARAMETER
+	var names = []string{"james", "jason", "ronald"}
+	var dataContainsO = filter(names, func(each string) bool {
+		return strings.Contains(each, "o") // Closure function as parameter
+	})
+	fmt.Println("Real data : ", names)
+	fmt.Println("Data contains O : ", dataContainsO)
+
 }
 
 func getAvg(numbers ...int) float64 {
@@ -92,4 +99,15 @@ func simpleSum(numbers []int) (int, int) {
 	return sum, 2
 	// The second returned value should be
 	// func() int { return 2 } // as closure function for returned value, but it doesn't work ._.
+}
+
+func filter(data []string, callback func(string) bool) []string {
+	// ^ "callback" is the input parameter followed by closure function
+	var result []string
+	for _, each := range data {
+		if filtered := callback(each); filtered {
+			result = append(result, each)
+		}
+	}
+	return result
 }
