@@ -63,12 +63,11 @@ func main() {
 
 	// FUNCTION AS PARAMETER
 	var names = []string{"james", "jason", "ronald"}
-	var dataContainsO = filter(names, func(each string) bool {
-		return strings.Contains(each, "o") // Closure function as parameter
+	var dataContainsO = filter(names, func(check string) bool {
+		return strings.Contains(check, "o") // strings.Contains check if a value has certain value
 	})
 	fmt.Println("Real data : ", names)
 	fmt.Println("Data contains O : ", dataContainsO)
-
 }
 
 func getAvg(numbers ...int) float64 {
@@ -102,7 +101,20 @@ func simpleSum(numbers []int) (int, int) {
 }
 
 func filter(data []string, callback func(string) bool) []string {
-	// ^ "callback" is the input parameter followed by closure function
+	// ^ "callback" is the closure function with data type func(string) bool
+	var result []string
+	for _, each := range data {
+		if filtered := callback(each); filtered {
+			result = append(result, each)
+		}
+	}
+	return result
+}
+
+// Alias
+type FilterCallback func(string) bool // Using type
+func filter2(data []string, callback FilterCallback) []string {
+	// The scheme `func(string) bool` is changed with FilterCallack
 	var result []string
 	for _, each := range data {
 		if filtered := callback(each); filtered {
