@@ -12,19 +12,17 @@ func main() {
 
 	runtime.GOMAXPROCS(2)
 
-	messages := make(chan int, 1) // The second parameter is the number of the buffer, which start from 0; 2 means 3 processes, etc.
-
+	messages := make(chan int, 2) // The second parameter is the number of the buffer, which start from 0; 2 means 3 processes, etc.
+	for i := 0; i < 5; i++ {
+		// This block will be executed first because the `messages` still have no value
+		fmt.Println("Send data ", i)
+		messages <- i
+	}
 	go func() {
 		for {
 			i := <-messages
 			fmt.Println("Receive data ", i)
 		}
 	}()
-
-	for i := 0; i < 5; i++ {
-		// This block will be executed first because the `messages` still have no value
-		fmt.Println("Send data ", i)
-		messages <- i
-	}
 
 }
